@@ -9,21 +9,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body onclick="closeAllPopups(event)">
-
 <div id="toast"></div>
 
-<!-- ═══════════════════════════════════════ HEADER ═══════════════════════════════════════ -->
+<!-- ═══ HEADER ═══ -->
 <header class="bg-jiro text-white sticky top-0 z-[100] shadow-xl">
     <div class="max-w-7xl mx-auto px-4 flex justify-between items-center h-20 gap-4">
-        <!-- Logo + Wordmark -->
         <div class="flex items-center gap-3 cursor-pointer shrink-0" onclick="showPage('home')">
             <div class="flex flex-col">
                 <span class="text-2xl font-black tracking-tighter uppercase leading-none text-white">JIRO</span>
                 <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-gold mt-0.5">Make your magic</span>
             </div>
         </div>
-
-        <!-- Search Bar -->
         <div id="header-search-wrap" class="flex-1 max-w-sm relative" onclick="event.stopPropagation()">
             <div class="flex items-center bg-white/10 rounded-xl px-4 py-2.5 gap-2">
                 <i class="fas fa-search text-white/40 text-xs"></i>
@@ -33,59 +29,57 @@
             </div>
             <div id="header-search-results" class="hidden"></div>
         </div>
-
-        <!-- Right side -->
         <div class="flex items-center gap-4 shrink-0">
-            <!-- Dark mode toggle -->
             <button class="dark-toggle" id="dark-toggle-btn" onclick="toggleDarkMode(event)" title="Toggle Dark Mode"></button>
-
             <div id="logged-in-ui" class="hidden flex items-center gap-6">
                 <nav class="flex gap-4">
                     <button onclick="showPage('home')" class="text-[10px] font-black uppercase tracking-widest opacity-70 hover:opacity-100 transition">Discovery</button>
                     <button onclick="showPage('library')" class="text-[10px] font-black uppercase tracking-widest opacity-70 hover:opacity-100 transition">Library</button>
                     <button onclick="showPage('studio')" class="text-[10px] font-black uppercase tracking-widest opacity-70 hover:opacity-100 transition">My Studio</button>
+                    <button onclick="showPage('reviews')" class="text-[10px] font-black uppercase tracking-widest opacity-70 hover:opacity-100 transition">Reviews</button>
                 </nav>
                 <div class="relative">
                     <div class="flex items-center gap-3 border-l border-white/10 pl-4 cursor-pointer" onclick="toggleDropdown(event, 'user-dropdown')">
                         <div class="text-right">
                             <p id="nav-username" class="text-xs font-black uppercase tracking-widest text-gold"></p>
-                            <p class="text-[8px] font-black uppercase tracking-widest opacity-40" id="nav-role-label">Magician</p>
+                            <div class="flex items-center justify-end gap-2">
+                                <span id="nav-sigils-display" class="sigil-display text-[8px]">⚡ <span id="nav-sigils">0</span></span>
+                                <p class="text-[8px] font-black uppercase tracking-widest opacity-40" id="nav-role-label">Magician</p>
+                            </div>
                         </div>
                         <img id="nav-pfp" src="" class="w-10 h-10 rounded-2xl border-2 border-white/20 shadow-lg bg-slate-800 object-cover">
                     </div>
-                    <div id="user-dropdown" class="dropdown-menu absolute right-0 mt-4 w-56 bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
+                    <div id="user-dropdown" class="dropdown-menu absolute right-0 mt-4 w-60 bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
                         <button onclick="showPage('user-profile', currentUser.uid); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition border-b"><i class="fas fa-user-circle mr-2 text-amber-500"></i> My Profile</button>
                         <button onclick="showPage('readlist', currentUser.uid); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition border-b"><i class="fas fa-list mr-2 text-blue-400"></i> My Read List</button>
+                        <button onclick="showPage('my-concerns'); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition border-b"><i class="fas fa-envelope mr-2 text-blue-400"></i> My Concerns</button>
                         <button onclick="openModal('userSettingsModal'); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition border-b"><i class="fas fa-cog mr-2 text-slate-400"></i> Settings</button>
                         <div id="dev-panel-btn-wrap" class="hidden">
                             <button onclick="showPage('devpanel'); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-amber-500 hover:bg-amber-50 transition border-b"><i class="fas fa-terminal mr-2"></i> Dev Panel</button>
                             <button onclick="showPage('concerns'); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-amber-500 hover:bg-amber-50 transition border-b"><i class="fas fa-inbox mr-2"></i> Concerns <span id="concern-badge" class="ml-1 bg-red-500 text-white rounded-full text-[8px] px-1.5 hidden"></span></button>
+                            <button onclick="showPage('dev-ack'); closeAllPopups();" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-amber-500 hover:bg-amber-50 transition border-b"><i class="fas fa-star mr-2"></i> Acknowledgements</button>
                         </div>
                         <button onclick="logout()" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition border-b"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
                         <button onclick="confirmDeleteAccount()" class="w-full text-left px-6 py-4 text-[10px] font-black uppercase tracking-widest text-red-400 hover:bg-red-50 transition"><i class="fas fa-skull mr-2"></i> Delete Account</button>
                     </div>
                 </div>
             </div>
-            <button id="login-btn" onclick="openModal('authModal')" class="bg-amber-400 text-slate-900 px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white transition">
-                Enter JIRO
-            </button>
+            <button id="login-btn" onclick="openModal('authModal')" class="bg-amber-400 text-slate-900 px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white transition">Enter JIRO</button>
         </div>
     </div>
 </header>
 
-<!-- ═══════════════════════════════════════ MAIN ═══════════════════════════════════════ -->
+<!-- ═══ MAIN ═══ -->
 <main class="max-w-7xl mx-auto p-6 md:p-12 min-h-screen">
 
-    <!-- ── DISCOVERY PAGE ── -->
+    <!-- DISCOVERY PAGE -->
     <section id="page-home" class="page-content animate-fade-in">
-
-        <!-- Genre Filter -->
         <div class="mb-10 flex flex-wrap items-center gap-4">
-            <span class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Genre</span>
-            <select id="genre-filter" onchange="renderHome()" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-600 outline-none focus:ring-2 ring-amber-400 transition shadow-sm">
+            <span class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Browse Genre</span>
+            <select id="genre-filter" onchange="handleGenreSelect(this.value)" class="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-600 outline-none focus:ring-2 ring-amber-400 transition shadow-sm">
                 <option value="">All Genres</option>
                 <option>Boys Love Collection</option>
-                <option>Woman Love Woman Collection</option>
+                <option>Girls Love Collection</option>
                 <option>Circle Romance</option>
                 <option>Corruption</option>
                 <option>Dystopian Fantasy</option>
@@ -100,85 +94,65 @@
                 <option>Unrequited Love</option>
             </select>
         </div>
-
         <!-- Featured Magicians -->
         <div class="mb-16">
-            <div class="flex items-center gap-4 mb-4">
-                <h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Featured Magicians</h2>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-4"><h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Featured Magicians</h2><div class="h-px bg-slate-100 flex-1"></div></div>
             <div class="ftabs" id="featured-tabs">
-                <button onclick="switchFeaturedTab('daily', this)" class="active">Daily</button>
-                <button onclick="switchFeaturedTab('weekly', this)">Weekly</button>
-                <button onclick="switchFeaturedTab('monthly', this)">Monthly</button>
-                <button onclick="switchFeaturedTab('alltime', this)">All Time</button>
+                <button onclick="switchFeaturedTab('daily',this)" class="active">Daily</button>
+                <button onclick="switchFeaturedTab('weekly',this)">Weekly</button>
+                <button onclick="switchFeaturedTab('monthly',this)">Monthly</button>
+                <button onclick="switchFeaturedTab('alltime',this)">All Time</button>
             </div>
             <div class="flex flex-wrap gap-3 mb-4" id="featured-category-tabs">
-                <button onclick="switchFeaturedCategory('likes', this)" class="active ftabs-cat text-[9px] font-black uppercase tracking-widest text-amber-600 border border-amber-200 bg-amber-50 rounded-lg px-3 py-1.5 transition hover:bg-amber-100"><i class="fas fa-heart mr-1"></i> Most Liked</button>
-                <button onclick="switchFeaturedCategory('chapters', this)" class="ftabs-cat text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 bg-white rounded-lg px-3 py-1.5 transition hover:bg-slate-50"><i class="fas fa-book mr-1"></i> Most Chapters</button>
-                <button onclick="switchFeaturedCategory('views', this)" class="ftabs-cat text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 bg-white rounded-lg px-3 py-1.5 transition hover:bg-slate-50"><i class="fas fa-eye mr-1"></i> Most Viewed</button>
+                <button onclick="switchFeaturedCategory('likes',this)" class="active ftabs-cat text-[9px] font-black uppercase tracking-widest text-amber-600 border border-amber-200 bg-amber-50 rounded-lg px-3 py-1.5 transition hover:bg-amber-100"><i class="fas fa-heart mr-1"></i> Most Liked</button>
+                <button onclick="switchFeaturedCategory('chapters',this)" class="ftabs-cat text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 bg-white rounded-lg px-3 py-1.5 transition hover:bg-slate-50"><i class="fas fa-book mr-1"></i> Most Chapters</button>
+                <button onclick="switchFeaturedCategory('views',this)" class="ftabs-cat text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-100 bg-white rounded-lg px-3 py-1.5 transition hover:bg-slate-50"><i class="fas fa-eye mr-1"></i> Most Viewed</button>
             </div>
             <div id="featured-magicians-list" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
         </div>
-
         <!-- Continue Reading -->
         <div id="continue-reading-section" class="mb-20 hidden">
             <h2 class="text-xs font-black text-amber-500 mb-8 tracking-[0.3em] uppercase">Continue Your Journey</h2>
             <div id="continue-reading-list" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
         </div>
-
         <!-- Top Picks -->
         <div class="mb-16">
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Top Picks</h2>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-8"><h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Top Picks</h2><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="top-picks-library" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8"></div>
         </div>
-
-        <!-- Suggested for You -->
+        <!-- Suggested -->
         <div id="suggested-section" class="mb-16 hidden">
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Suggested for You</h2>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-8"><h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Suggested for You</h2><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="suggested-library" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8"></div>
         </div>
-
         <!-- Public Archive -->
         <div>
-            <div class="flex items-center gap-4 mb-8">
-                <h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">The Public Archive</h2>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-8"><h2 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">The Public Archive</h2><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="public-library" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8"></div>
         </div>
     </section>
 
-    <!-- ── LIBRARY PAGE ── -->
+    <!-- GENRE PAGE -->
+    <section id="page-genre" class="page-content animate-fade-in">
+        <button onclick="showPage('home')" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition mb-8"><i class="fas fa-arrow-left mr-1"></i> Back to Discovery</button>
+        <div id="genre-banner" class="genre-banner"></div>
+        <div id="genre-books-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8"></div>
+    </section>
+
+    <!-- LIBRARY PAGE -->
     <section id="page-library" class="page-content animate-fade-in">
         <h2 class="text-4xl font-black text-slate-900 mb-10 uppercase tracking-tighter">Your Library</h2>
-
-        <!-- Saved -->
         <div class="mb-14">
-            <div class="flex items-center gap-4 mb-6">
-                <h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Saved Manuscripts</h3>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-6"><h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Saved Manuscripts</h3><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="saved-library" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10"></div>
         </div>
-
-        <!-- Finished Reading -->
         <div class="mb-14">
-            <div class="flex items-center gap-4 mb-6">
-                <h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Finished Reading</h3>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-6"><h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Finished Reading</h3><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="finished-library" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10"></div>
         </div>
     </section>
 
-    <!-- ── READ LIST PAGE ── -->
+    <!-- READ LIST PAGE -->
     <section id="page-readlist" class="page-content animate-fade-in">
         <div class="flex flex-wrap items-start justify-between gap-4 mb-10">
             <div>
@@ -190,7 +164,22 @@
         <div id="readlist-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8"></div>
     </section>
 
-    <!-- ── STUDIO PAGE ── -->
+    <!-- REVIEWS PAGE -->
+    <section id="page-reviews" class="page-content animate-fade-in">
+        <div class="flex flex-wrap justify-between items-start gap-4 mb-10">
+            <div>
+                <h2 class="text-4xl font-black text-slate-900 uppercase tracking-tighter">Book Reviews</h2>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Share your thoughts on any manuscript</p>
+            </div>
+            <button onclick="openModal('writeReviewModal')" class="bg-jiro text-white px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl hover:opacity-90 transition">+ Write Review</button>
+        </div>
+        <div class="mb-6">
+            <input id="review-search" type="text" placeholder="Search reviews by book title or author…" oninput="renderReviews()" class="w-full max-w-md p-4 bg-white border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold text-sm shadow-sm">
+        </div>
+        <div id="reviews-list"></div>
+    </section>
+
+    <!-- STUDIO PAGE -->
     <section id="page-studio" class="page-content animate-fade-in">
         <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100">
             <div class="px-10 py-10 border-b flex justify-between items-center bg-slate-50/50">
@@ -198,26 +187,30 @@
                     <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase">My Studio</h1>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Craft your magic</p>
                 </div>
-                <button onclick="openModal('newDraftModal')" class="bg-jiro text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-105 transition">
-                    + Add Manuscript
-                </button>
+                <button onclick="openModal('newDraftModal')" class="bg-jiro text-white px-8 py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-105 transition">+ Add Manuscript</button>
             </div>
             <div class="p-10">
-                <div id="my-studio-list" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
+                <div class="flex gap-4 mb-6">
+                    <button onclick="filterStudio('all', this)" class="ftabs-studio active text-[9px] font-black uppercase tracking-widest border border-slate-200 rounded-lg px-3 py-1.5 transition bg-slate-900 text-white">All</button>
+                    <button onclick="filterStudio('draft', this)" class="ftabs-studio text-[9px] font-black uppercase tracking-widest border border-slate-200 rounded-lg px-3 py-1.5 transition bg-white text-slate-400 hover:bg-slate-50">Drafts</button>
+                    <button onclick="filterStudio('published', this)" class="ftabs-studio text-[9px] font-black uppercase tracking-widest border border-slate-200 rounded-lg px-3 py-1.5 transition bg-white text-slate-400 hover:bg-slate-50">Published</button>
+                </div>
+                <div id="my-studio-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6"></div>
             </div>
         </div>
     </section>
 
-    <!-- ── USER PROFILE PAGE ── -->
+    <!-- USER PROFILE PAGE -->
     <section id="page-user-profile" class="page-content animate-fade-in">
         <div class="bg-white rounded-[3rem] shadow-xl border border-slate-100 overflow-hidden mb-12">
             <div class="p-10 md:p-16 flex flex-col md:flex-row items-center gap-10 relative">
                 <div id="profile-actions-area" class="absolute top-6 right-6 md:top-10 md:right-10 flex gap-3"></div>
                 <img id="view-profile-pfp" class="w-40 h-40 rounded-[3rem] shadow-2xl object-cover border-4 border-white bg-slate-100">
                 <div class="flex-1 text-center md:text-left">
-                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2">
+                    <div class="flex items-center justify-center md:justify-start gap-3 mb-2 flex-wrap">
                         <p class="text-[10px] font-black text-amber-500 uppercase tracking-[0.3em]">Magician Identity</p>
                         <span id="profile-dev-badge" class="hidden bg-amber-400 text-slate-900 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest">Developer</span>
+                        <span id="profile-artist-badge" class="hidden bg-purple-400 text-white px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest">Artist</span>
                         <span id="profile-gender-badge" class="hidden px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest"></span>
                     </div>
                     <h2 id="view-profile-name" class="text-5xl font-black text-slate-900 uppercase tracking-tighter mb-4"></h2>
@@ -228,29 +221,23 @@
                         <div><p id="view-profile-count" class="text-2xl font-black text-slate-900">0</p><p class="text-[8px] font-black uppercase tracking-widest text-slate-400">Manuscripts</p></div>
                         <div class="w-px h-10 bg-slate-100"></div>
                         <div><p id="view-profile-views" class="text-2xl font-black text-slate-900">0</p><p class="text-[8px] font-black uppercase tracking-widest text-slate-400">Total Views</p></div>
+                        <div class="w-px h-10 bg-slate-100"></div>
+                        <div><p id="view-profile-sigils" class="text-2xl font-black text-amber-500">0</p><p class="text-[8px] font-black uppercase tracking-widest text-slate-400">⚡ Sigils</p></div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="mb-20">
-            <div class="flex items-center gap-4 mb-8 px-4">
-                <h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Manifestations</h3>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-8 px-4"><h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Manifestations</h3><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="view-profile-created" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10"></div>
         </div>
-
         <div id="view-profile-reading-section" class="mb-20 hidden">
-            <div class="flex items-center gap-4 mb-8 px-4">
-                <h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Current Journeys</h3>
-                <div class="h-px bg-slate-100 flex-1"></div>
-            </div>
+            <div class="flex items-center gap-4 mb-8 px-4"><h3 class="text-xs font-black text-slate-400 tracking-[0.3em] uppercase">Current Journeys</h3><div class="h-px bg-slate-100 flex-1"></div></div>
             <div id="view-profile-reading" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10"></div>
         </div>
     </section>
 
-    <!-- ── READER PAGE ── -->
+    <!-- READER PAGE -->
     <section id="page-reader" class="page-content animate-fade-in">
         <div id="reader-container" class="max-w-4xl mx-auto bg-white min-h-screen shadow-2xl rounded-t-[3rem]">
             <div class="flex justify-between items-center sticky top-0 bg-white/90 backdrop-blur-md px-10 py-6 z-10 border-b rounded-t-[3rem]">
@@ -263,6 +250,12 @@
             </div>
             <div id="reader-content" class="p-10 md:p-24 prose prose-slate max-w-none"></div>
             <div class="border-t bg-slate-50/50 p-10 md:p-24">
+                <!-- Rating -->
+                <div id="reader-rating-section" class="mb-10 p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-3">Rate this Manuscript</p>
+                    <div id="rate-stars" class="flex gap-1 mb-2"></div>
+                    <p id="rate-current" class="text-[9px] text-slate-400 font-black uppercase"></p>
+                </div>
                 <h3 class="text-xl font-black uppercase tracking-tight text-slate-900 mb-10">Echoes & Conversations</h3>
                 <div class="mb-12">
                     <textarea id="main-comment-input" placeholder="Leave an echo in the void..." class="w-full p-6 bg-white border rounded-[1.5rem] h-32 outline-none focus:ring-2 ring-amber-400 transition mb-4"></textarea>
@@ -273,23 +266,21 @@
         </div>
     </section>
 
-    <!-- ── DEV PANEL PAGE ── -->
+    <!-- DEV PANEL -->
     <section id="page-devpanel" class="page-content animate-fade-in">
         <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100">
             <div class="px-10 py-10 border-b bg-slate-50/50">
                 <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase">Developer Panel</h1>
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Manage users and their works</p>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Manage users, roles and manuscripts</p>
             </div>
             <div class="p-10">
-                <div class="mb-6">
-                    <input id="dev-user-search" type="text" placeholder="Search users by name or email…" oninput="renderDevPanel()" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold text-sm">
-                </div>
+                <input id="dev-user-search" type="text" placeholder="Search users by name or email…" oninput="renderDevPanel()" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold text-sm mb-6">
                 <div id="dev-users-list"></div>
             </div>
         </div>
     </section>
 
-    <!-- ── CONCERNS PAGE (Dev only) ── -->
+    <!-- CONCERNS PAGE (Dev Inbox) -->
     <section id="page-concerns" class="page-content animate-fade-in">
         <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100">
             <div class="px-10 py-10 border-b bg-slate-50/50 flex justify-between items-center">
@@ -299,15 +290,54 @@
                 </div>
                 <button onclick="clearAllConcerns()" class="text-[9px] font-black uppercase text-red-400 hover:text-red-600 tracking-widest">Clear All</button>
             </div>
-            <div class="p-10">
-                <div id="concerns-list"></div>
+            <div class="p-10"><div id="concerns-list"></div></div>
+        </div>
+    </section>
+
+    <!-- MY CONCERNS (User view) -->
+    <section id="page-my-concerns" class="page-content animate-fade-in">
+        <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100">
+            <div class="px-10 py-10 border-b bg-slate-50/50 flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase">My Concerns</h1>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Messages you sent to the developer</p>
+                </div>
+                <button onclick="openInfoModal('feedback')" class="bg-jiro text-white px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition">+ New Message</button>
+            </div>
+            <div class="p-10"><div id="my-concerns-list"></div></div>
+        </div>
+    </section>
+
+    <!-- DEV ACKNOWLEDGEMENTS MANAGER -->
+    <section id="page-dev-ack" class="page-content animate-fade-in">
+        <div class="bg-white rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100">
+            <div class="px-10 py-10 border-b bg-slate-50/50">
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight uppercase">Manage Acknowledgements</h1>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Add or remove credited contributors</p>
+            </div>
+            <div class="p-10 space-y-8">
+                <div id="ack-sections"></div>
+                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                    <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 mb-4">Add New Credit</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-3">
+                        <input id="ack-new-name" type="text" placeholder="Name / Pseudonym" class="p-3 bg-white border-2 border-slate-100 rounded-xl outline-none focus:border-amber-400 font-bold text-sm">
+                        <input id="ack-new-role" type="text" placeholder="Role (e.g. Illustrator)" class="p-3 bg-white border-2 border-slate-100 rounded-xl outline-none focus:border-amber-400 font-bold text-sm">
+                        <select id="ack-new-section" class="p-3 bg-white border-2 border-slate-100 rounded-xl outline-none focus:border-amber-400 font-bold text-sm">
+                            <option value="developers">Developers</option>
+                            <option value="artists">Artists</option>
+                            <option value="special">Special Thanks</option>
+                        </select>
+                    </div>
+                    <input id="ack-new-uid" type="text" placeholder="User UID (optional — links to profile)" class="w-full p-3 bg-white border-2 border-slate-100 rounded-xl outline-none focus:border-amber-400 font-bold text-sm mb-3">
+                    <button onclick="addAcknowledgement()" class="bg-jiro text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition">Add Credit</button>
+                </div>
             </div>
         </div>
     </section>
 
 </main>
 
-<!-- ════════ FOOTER ════════ -->
+<!-- ════ FOOTER ════ -->
 <footer id="site-footer">
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col cursor-pointer mb-10" onclick="showPage('home')">
@@ -315,7 +345,6 @@
             <span class="text-[9px] font-bold tracking-[0.4em] uppercase text-gold mt-1">Make your magic</span>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-            <!-- Column 1 -->
             <div>
                 <p class="footer-col-title">About Us</p>
                 <button class="footer-link" onclick="openInfoModal('about')">About Us</button>
@@ -323,18 +352,17 @@
                 <button class="footer-link" onclick="openInfoModal('content-policy')">Content Policy</button>
                 <button class="footer-link" onclick="openInfoModal('privacy')">Privacy Policy</button>
             </div>
-            <!-- Column 2 -->
             <div>
                 <p class="footer-col-title">Contact Us</p>
                 <button class="footer-link" onclick="openInfoModal('report-abuse')">Report Abuse</button>
                 <button class="footer-link" onclick="openInfoModal('tech-support')">Technical Support</button>
                 <button class="footer-link" onclick="openInfoModal('feedback')">Feedback</button>
             </div>
-            <!-- Column 3 -->
             <div>
                 <p class="footer-col-title">Acknowledgement</p>
                 <button class="footer-link" onclick="openInfoModal('developers')">Developers</button>
                 <button class="footer-link" onclick="openInfoModal('artists')">Artists</button>
+                <button class="footer-link" onclick="openInfoModal('special')">Special Thanks</button>
             </div>
         </div>
         <div class="border-t border-white/10 pt-6 text-center">
@@ -343,7 +371,7 @@
     </div>
 </footer>
 
-<!-- ═══════════════════════════════════════ MODALS ═══════════════════════════════════════ -->
+<!-- ════ MODALS ════ -->
 
 <!-- AUTH MODAL -->
 <div id="authModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md hidden">
@@ -357,45 +385,38 @@
             <input type="text" id="auth-email" placeholder="Email Address or Username" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition" required>
             <div id="signup-fields" class="hidden space-y-4">
                 <input type="text" id="auth-pseudo" placeholder="Your Pseudonym (Magician Identity)" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition">
+                <!-- Birthday -->
+                <div>
+                    <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Date of Birth <span class="text-red-400">*</span></label>
+                    <input type="date" id="auth-birthday" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold">
+                    <p id="auth-age-hint" class="text-[9px] text-slate-400 font-bold mt-1"></p>
+                </div>
                 <!-- Gender -->
                 <div>
                     <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">You are a…</label>
                     <div class="grid grid-cols-2 gap-3">
                         <label class="flex items-center gap-3 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-amber-400 transition has-[:checked]:border-amber-400 has-[:checked]:bg-amber-50">
                             <input type="radio" name="auth-gender" value="witch" class="accent-amber-400">
-                            <div>
-                                <p class="text-xs font-black text-slate-700">🧙‍♀️ Witch</p>
-                                <p class="text-[8px] text-slate-400 font-bold uppercase">Female</p>
-                            </div>
+                            <div><p class="text-xs font-black text-slate-700">🧙‍♀️ Witch</p><p class="text-[8px] text-slate-400 font-bold uppercase">Female</p></div>
                         </label>
                         <label class="flex items-center gap-3 p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl cursor-pointer hover:border-amber-400 transition has-[:checked]:border-amber-400 has-[:checked]:bg-amber-50">
                             <input type="radio" name="auth-gender" value="wizard" class="accent-amber-400">
-                            <div>
-                                <p class="text-xs font-black text-slate-700">🧙 Wizard</p>
-                                <p class="text-[8px] text-slate-400 font-bold uppercase">Male</p>
-                            </div>
+                            <div><p class="text-xs font-black text-slate-700">🧙 Wizard</p><p class="text-[8px] text-slate-400 font-bold uppercase">Male</p></div>
                         </label>
                     </div>
                 </div>
-                <!-- Age / Explicit -->
-                <div class="bg-red-50 border border-red-200 rounded-2xl p-4">
-                    <label class="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" id="auth-of-age" class="mt-0.5 accent-red-500">
-                        <div>
-                            <p class="text-xs font-black text-red-700 uppercase tracking-wide">I confirm I am 18 years old or above.</p>
-                            <p class="text-[9px] text-red-400 mt-0.5">Explicit content (18+) is available only to verified adults. Minors are strictly NOT allowed to access explicit works.</p>
-                        </div>
-                    </label>
-                </div>
                 <textarea id="auth-bio" placeholder="Short bio (optional)" rows="2" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition text-sm resize-none"></textarea>
-                <select id="auth-question" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition text-xs font-bold uppercase text-slate-500">
+                <!-- Security Question -->
+                <select id="auth-question" onchange="toggleCustomQuestion()" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition text-xs font-bold uppercase text-slate-500">
                     <option value="" disabled selected>Select a Security Question</option>
                     <option value="pet">What was the name of your first pet?</option>
                     <option value="city">In what city were you born?</option>
                     <option value="book">What is your favorite book of all time?</option>
+                    <option value="custom">Other (Write Your Own)</option>
                 </select>
+                <input type="text" id="auth-custom-question" placeholder="Type your own security question…" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition hidden">
                 <input type="text" id="auth-answer" placeholder="Your Answer" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition">
-                <!-- Terms & Conditions -->
+                <!-- T&C -->
                 <div>
                     <button type="button" onclick="openModal('tncModal')" class="text-[10px] font-black uppercase tracking-widest text-amber-500 hover:underline"><i class="fas fa-scroll mr-1"></i> Read Terms & Conditions</button>
                 </div>
@@ -415,22 +436,20 @@
     </div>
 </div>
 
-<!-- TERMS & CONDITIONS MODAL -->
+<!-- T&C MODAL -->
 <div id="tncModal" class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md hidden">
     <div class="bg-white rounded-[2rem] p-10 w-full max-w-lg shadow-2xl animate-fade-in relative max-h-[90vh] overflow-y-auto">
         <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight mb-2">Terms & Conditions</h2>
         <p class="text-[9px] font-black text-amber-500 uppercase tracking-widest mb-6">JIRO · Make Your Magic</p>
         <div class="tnc-content">
-            <p><strong>1. Acceptance of Terms</strong><br>By creating an account on JIRO, you agree to be bound by these Terms and Conditions. If you do not agree, you may not use this platform.</p>
-            <p class="mt-3"><strong>2. Age Requirements</strong><br>JIRO is open to all ages for general content. However, works marked as Explicit (18+) are strictly accessible only to users who have confirmed they are 18 years of age or older. Misrepresenting your age is a violation of these terms.</p>
-            <p class="mt-3"><strong>3. Content Policy</strong><br>Users must not upload, share, or promote content that is defamatory, hateful, sexually explicit involving minors, or otherwise illegal. JIRO reserves the right to remove any content and suspend any account that violates this policy.</p>
-            <p class="mt-3"><strong>4. Intellectual Property</strong><br>By publishing a manuscript on JIRO, you affirm that you own the rights to the content or have appropriate permission. JIRO does not claim ownership of your work, but you grant JIRO a license to display it on the platform.</p>
-            <p class="mt-3"><strong>5. Privacy</strong><br>JIRO collects only the information necessary to operate the platform. We do not sell your personal data to third parties. See our Privacy Policy for more details.</p>
-            <p class="mt-3"><strong>6. Account Responsibility</strong><br>You are responsible for all activity under your account. Keep your credentials secure. Notify the developer immediately of any unauthorized use.</p>
-            <p class="mt-3"><strong>7. Termination</strong><br>JIRO reserves the right to suspend or delete accounts that violate these terms, at the discretion of the developer.</p>
-            <p class="mt-3"><strong>8. Changes to Terms</strong><br>JIRO may update these terms at any time. Continued use of the platform after changes constitutes acceptance of the new terms.</p>
-            <p class="mt-3"><strong>9. Governing Law</strong><br>These terms are governed by the laws applicable in the jurisdiction of JIRO's developer.</p>
-            <p class="mt-3"><strong>10. Contact</strong><br>For any questions about these Terms, please use the Feedback or Report Abuse features in the footer.</p>
+            <p><strong>1. Acceptance of Terms</strong><br>By creating an account on JIRO, you agree to be bound by these Terms and Conditions.</p>
+            <p class="mt-3"><strong>2. Age Requirements</strong><br>JIRO uses your date of birth to verify age. Explicit (18+) content is accessible only to users 18 years of age or older. Misrepresenting your age violates these terms.</p>
+            <p class="mt-3"><strong>3. Content Policy</strong><br>Users must not upload defamatory, hateful, or illegal content. Sexual content involving minors is strictly prohibited. JIRO may remove content and suspend accounts for violations.</p>
+            <p class="mt-3"><strong>4. Intellectual Property</strong><br>You retain ownership of your manuscripts. Publishing grants JIRO a display license only.</p>
+            <p class="mt-3"><strong>5. JIRO Sigils</strong><br>JIRO Sigils are in-platform currency. They have no real-world monetary value. Authors earn Sigils for qualifying published chapters (1,000+ words). 25% of Sigils from paid chapter purchases go to the platform developer.</p>
+            <p class="mt-3"><strong>6. Privacy</strong><br>Data is stored locally in your browser. We do not sell your data or use external tracking.</p>
+            <p class="mt-3"><strong>7. Account Responsibility</strong><br>You are responsible for all activity under your account.</p>
+            <p class="mt-3"><strong>8. Termination</strong><br>JIRO reserves the right to suspend or delete accounts that violate these terms.</p>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-2">
             <button onclick="disagreeTNC()" class="bg-red-50 text-red-600 border border-red-200 p-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-100 transition"><i class="fas fa-times mr-2"></i>Disagree</button>
@@ -442,12 +461,12 @@
 
 <!-- BOOK LOBBY MODAL -->
 <div id="bookLobbyModal" class="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-slate-900/95 backdrop-blur-xl hidden">
-    <div class="bg-white rounded-[3rem] w-full max-w-5xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[80vh]">
-        <div class="w-full md:w-2/5 bg-slate-100 relative">
+    <div class="bg-white rounded-[3rem] w-full max-w-5xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[85vh]">
+        <div class="w-full md:w-2/5 bg-slate-100 relative flex-shrink-0">
             <img id="lobby-cover" class="w-full h-full object-cover">
             <button onclick="closeModal('bookLobbyModal')" class="absolute top-6 left-6 bg-white/20 backdrop-blur-md text-white w-10 h-10 rounded-full hover:bg-white hover:text-slate-900 transition flex items-center justify-center"><i class="fas fa-times"></i></button>
         </div>
-        <div class="flex-1 p-10 md:p-16 overflow-y-auto flex flex-col justify-between">
+        <div class="flex-1 p-10 md:p-14 overflow-y-auto flex flex-col justify-between">
             <div>
                 <h2 id="lobby-title" class="text-4xl font-black text-slate-900 mb-3 tracking-tighter uppercase leading-none"></h2>
                 <div class="flex items-center gap-3 mb-2">
@@ -455,18 +474,20 @@
                     <button id="lobby-author-btn" class="text-xs font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest transition"></button>
                 </div>
                 <p id="lobby-views" class="text-[9px] font-black uppercase tracking-widest text-slate-300 mb-2"></p>
+                <!-- Star rating display -->
+                <div id="lobby-rating-display" class="flex items-center gap-2 mb-3"></div>
                 <div id="lobby-meta-badges" class="flex flex-wrap gap-2 mb-3"></div>
-                <div id="lobby-tags" class="flex flex-wrap gap-2 mb-8"></div>
+                <div id="lobby-tags" class="flex flex-wrap gap-2 mb-6"></div>
                 <p id="lobby-synopsis" class="text-slate-500 leading-relaxed font-medium text-base whitespace-pre-wrap"></p>
             </div>
             <div>
                 <div id="lobby-dev-actions" class="hidden mb-4">
                     <button id="lobby-dev-delete-btn" class="w-full bg-red-600 text-white py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-red-800 transition"><i class="fas fa-skull-crossbones mr-2"></i> Developer: Delete Manuscript</button>
                 </div>
-                <div class="flex gap-4">
-                    <button id="lobby-read-btn" class="flex-[2] bg-jiro text-white py-5 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition hover:opacity-90">Start Reading</button>
-                    <button id="lobby-bookmark-btn" class="flex-1 border-2 border-slate-100 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-50 transition"></button>
-                    <button id="lobby-finished-btn" class="flex-1 border-2 border-slate-100 py-5 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-50 transition text-green-600 border-green-100 bg-green-50/50"></button>
+                <div class="flex gap-3 flex-wrap">
+                    <button id="lobby-read-btn" class="flex-[2] bg-jiro text-white py-4 rounded-2xl font-black uppercase tracking-widest text-sm shadow-xl transition hover:opacity-90">Start Reading</button>
+                    <button id="lobby-bookmark-btn" class="flex-1 border-2 border-slate-100 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-slate-50 transition min-w-[100px]"></button>
+                    <button id="lobby-finished-btn" class="flex-1 border-2 border-green-100 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-green-50 transition text-green-600 min-w-[100px]"></button>
                 </div>
             </div>
         </div>
@@ -477,13 +498,15 @@
 <div id="studioModal" class="fixed inset-0 z-[120] bg-slate-50 hidden flex-col">
     <div class="h-20 bg-white border-b px-8 flex justify-between items-center shrink-0">
         <button onclick="closeStudio()" class="text-slate-400 hover:text-slate-900 transition text-xl"><i class="fas fa-times"></i></button>
-        <div class="flex gap-4">
-            <button onclick="deleteManuscript()" class="text-red-400 px-4 py-2 font-black text-[10px] uppercase tracking-widest hover:text-red-600 transition">Delete Manuscript</button>
-            <button onclick="saveStudioChanges()" class="bg-jiro text-white px-8 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:opacity-90 transition">Save Manuscript</button>
+        <div id="studio-title-display" class="text-[10px] font-black uppercase text-slate-400 tracking-widest truncate max-w-xs"></div>
+        <div class="flex gap-3">
+            <button onclick="deleteManuscript()" class="text-red-400 px-4 py-2 font-black text-[10px] uppercase tracking-widest hover:text-red-600 transition">Delete</button>
+            <button onclick="saveStudioChanges()" class="border border-slate-200 text-slate-600 px-6 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-50 transition">Save Draft</button>
+            <button onclick="publishManuscript()" id="studio-publish-btn" class="bg-jiro text-white px-8 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:opacity-90 transition"></button>
         </div>
     </div>
     <div class="flex-1 flex overflow-hidden">
-        <aside class="w-96 bg-white border-r overflow-y-auto p-10 space-y-6 shrink-0">
+        <aside class="w-96 bg-white border-r overflow-y-auto p-8 space-y-5 shrink-0">
             <div class="book-cover-aspect bg-slate-100 rounded-[2rem] border-4 border-dashed border-slate-200 overflow-hidden relative cursor-pointer hover:border-amber-400 transition" onclick="document.getElementById('cover-input').click()">
                 <img id="studio-cover-preview" class="w-full h-full object-cover hidden">
                 <div id="studio-cover-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-300 font-black uppercase text-[10px] tracking-widest gap-2"><i class="fas fa-image text-2xl"></i><span>Upload Cover</span></div>
@@ -494,20 +517,13 @@
                 <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Genre</label>
                 <select id="studio-genre" class="w-full p-4 bg-slate-50 border rounded-xl font-bold outline-none focus:ring-2 ring-amber-400 transition text-sm">
                     <option value="">Select Genre…</option>
-                    <option>Boys Love Collection</option>
-                    <option>Woman Love Woman Collection</option>
-                    <option>Circle Romance</option>
-                    <option>Corruption</option>
-                    <option>Dystopian Fantasy</option>
-                    <option>Enemies to Lovers</option>
-                    <option>Falling In Love Again</option>
-                    <option>Fan Fiction</option>
-                    <option>Forbidden Love</option>
-                    <option>Lovers to Friends</option>
-                    <option>Second Chance</option>
-                    <option>Small Town Romance</option>
-                    <option>University Series</option>
-                    <option>Unrequited Love</option>
+                    <option>Boys Love Collection</option><option>Woman Love Woman Collection</option>
+                    <option>Circle Romance</option><option>Corruption</option>
+                    <option>Dystopian Fantasy</option><option>Enemies to Lovers</option>
+                    <option>Falling In Love Again</option><option>Fan Fiction</option>
+                    <option>Forbidden Love</option><option>Lovers to Friends</option>
+                    <option>Second Chance</option><option>Small Town Romance</option>
+                    <option>University Series</option><option>Unrequited Love</option>
                 </select>
             </div>
             <div>
@@ -520,10 +536,18 @@
                 </select>
             </div>
             <div>
+                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Status</label>
+                <select id="studio-status" class="w-full p-4 bg-slate-50 border rounded-xl font-bold outline-none focus:ring-2 ring-amber-400 transition text-sm">
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                    <option value="hiatus">On Hiatus</option>
+                </select>
+            </div>
+            <div>
                 <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Tags (comma separated)</label>
                 <input type="text" id="studio-tags-input" placeholder="Fantasy, Mystery, Gritty..." class="w-full p-4 bg-slate-50 border rounded-xl font-bold outline-none focus:ring-2 ring-amber-400 transition">
             </div>
-            <textarea id="studio-synopsis-input" placeholder="Synopsis" class="w-full p-4 bg-slate-50 border rounded-xl h-32 outline-none focus:ring-2 ring-amber-400 transition resize-none"></textarea>
+            <textarea id="studio-synopsis-input" placeholder="Synopsis" class="w-full p-4 bg-slate-50 border rounded-xl h-28 outline-none focus:ring-2 ring-amber-400 transition resize-none"></textarea>
             <div>
                 <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Visibility</label>
                 <select id="studio-visibility" class="w-full p-4 bg-slate-50 border rounded-xl font-bold outline-none focus:ring-2 ring-amber-400 transition text-sm">
@@ -531,17 +555,16 @@
                     <option value="private">Private (Only You)</option>
                 </select>
             </div>
-            <div>
-                <label class="flex items-center gap-3 cursor-pointer p-4 bg-red-50 border border-red-200 rounded-2xl hover:bg-red-100 transition">
-                    <input type="checkbox" id="studio-explicit" class="accent-red-500">
-                    <div>
-                        <p class="text-xs font-black text-red-700 uppercase">Explicit Content (18+)</p>
-                        <p class="text-[9px] text-red-400">Visible only to verified adults</p>
-                    </div>
-                </label>
-            </div>
+            <label class="flex items-start gap-3 cursor-pointer p-4 bg-red-50 border border-red-200 rounded-2xl hover:bg-red-100 transition">
+                <input type="checkbox" id="studio-explicit" class="accent-red-500 mt-0.5">
+                <div><p class="text-xs font-black text-red-700 uppercase">Explicit Content (18+)</p><p class="text-[9px] text-red-400">Visible only to verified adults</p></div>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer p-4 bg-amber-50 border border-amber-200 rounded-2xl hover:bg-amber-100 transition">
+                <input type="checkbox" id="studio-paid" class="accent-amber-500 mt-0.5">
+                <div><p class="text-xs font-black text-amber-700 uppercase">⚡ Paid Story (5 Sigils/Chapter)</p><p class="text-[9px] text-amber-500">First chapter free. Earn 75% of Sigils.</p></div>
+            </label>
         </aside>
-        <div class="flex-1 p-16 overflow-y-auto">
+        <div class="flex-1 p-12 overflow-y-auto">
             <div class="max-w-3xl mx-auto">
                 <div class="flex justify-between items-center mb-10">
                     <h3 class="text-2xl font-black text-slate-900 uppercase">Chapters</h3>
@@ -571,7 +594,7 @@
         <div class="flex justify-between items-start mb-8">
             <div>
                 <h2 class="text-2xl font-black text-slate-900 tracking-tight uppercase">Refine Your Identity</h2>
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Leave a field blank to keep current value</p>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-1">Leave blank to keep current value</p>
             </div>
             <button onclick="closeModal('userSettingsModal')" class="text-slate-300 hover:text-slate-600 transition text-xl"><i class="fas fa-times"></i></button>
         </div>
@@ -584,27 +607,55 @@
             <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mt-3">Click to change photo</p>
         </div>
         <div class="space-y-4">
-            <div>
-                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Pseudonym</label>
-                <input type="text" id="set-pseudo" placeholder="New pseudonym..." class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold">
-            </div>
-            <div>
-                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Bio</label>
-                <textarea id="set-bio" placeholder="Tell the world about your magic..." rows="3" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition resize-none text-sm"></textarea>
-            </div>
-            <div>
-                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Email</label>
-                <input type="email" id="set-email" placeholder="New email..." class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold">
-            </div>
-            <div>
-                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">New Password</label>
-                <input type="password" id="set-pass" placeholder="Leave blank to keep current..." class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold">
-            </div>
+            <div><label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Pseudonym</label><input type="text" id="set-pseudo" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold"></div>
+            <div><label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Bio</label><textarea id="set-bio" rows="3" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition resize-none text-sm"></textarea></div>
+            <div><label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Email</label><input type="email" id="set-email" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold"></div>
+            <div><label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">New Password</label><input type="password" id="set-pass" placeholder="Leave blank to keep current..." class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold"></div>
         </div>
         <div class="flex gap-4 mt-8">
             <button onclick="closeModal('userSettingsModal')" class="flex-1 bg-slate-100 p-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition">Cancel</button>
             <button onclick="saveSettings()" class="flex-1 bg-jiro text-white p-5 rounded-2xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition">Save Changes</button>
         </div>
+    </div>
+</div>
+
+<!-- WRITE REVIEW MODAL -->
+<div id="writeReviewModal" class="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md hidden">
+    <div class="bg-white rounded-[2rem] p-10 w-full max-w-lg shadow-2xl animate-fade-in relative">
+        <h2 class="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6">Write a Review</h2>
+        <div class="space-y-4">
+            <div>
+                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Choose Manuscript</label>
+                <input type="text" id="review-book-search" placeholder="Search book title…" oninput="reviewSearchBooks(this.value)" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition font-bold">
+                <div id="review-book-results" class="hidden mt-2 bg-white border border-slate-100 rounded-xl shadow-lg max-h-40 overflow-y-auto"></div>
+                <p id="review-selected-book" class="mt-2 text-xs font-black text-amber-600 uppercase tracking-widest hidden"></p>
+            </div>
+            <div>
+                <label class="text-[9px] font-black uppercase text-slate-400 tracking-widest mb-2 block">Your Rating</label>
+                <div id="review-stars" class="flex gap-1"></div>
+            </div>
+            <textarea id="review-text" placeholder="Share your thoughts on this manuscript…" rows="5" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition resize-none text-sm"></textarea>
+        </div>
+        <div class="flex gap-4 mt-6">
+            <button onclick="closeModal('writeReviewModal')" class="flex-1 bg-slate-100 p-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition">Cancel</button>
+            <button onclick="submitReview()" class="flex-1 bg-jiro text-white p-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition">Publish Review</button>
+        </div>
+        <button onclick="closeModal('writeReviewModal')" class="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition text-xl"><i class="fas fa-times"></i></button>
+    </div>
+</div>
+
+<!-- CONCERN REPLY MODAL (Dev) -->
+<div id="concernReplyModal" class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-md hidden">
+    <div class="bg-white rounded-[2rem] p-10 w-full max-w-lg shadow-2xl animate-fade-in relative">
+        <h2 class="text-xl font-black text-slate-900 uppercase tracking-tight mb-2">Reply to Concern</h2>
+        <p id="concern-reply-subject" class="text-[9px] font-black text-amber-500 uppercase tracking-widest mb-4"></p>
+        <textarea id="concern-reply-text" placeholder="Type your reply…" rows="4" class="w-full p-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-amber-400 transition resize-none text-sm mb-4"></textarea>
+        <div class="flex gap-3">
+            <button onclick="closeModal('concernReplyModal')" class="flex-1 bg-slate-100 p-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-200 transition">Cancel</button>
+            <button onclick="sendConcernReply()" class="flex-1 bg-jiro text-white p-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:opacity-90 transition">Send Reply</button>
+        </div>
+        <input type="hidden" id="concern-reply-id">
+        <button onclick="closeModal('concernReplyModal')" class="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition text-xl"><i class="fas fa-times"></i></button>
     </div>
 </div>
 
