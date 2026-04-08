@@ -108,6 +108,33 @@ function saveUserSigils(user) {
     }
 }
 
+
+function viewUserProfile(userId) {
+    // Find the user in our registry
+    const user = Object.values(allUsers).find(u => u.uid === userId);
+    
+    if (!user) {
+        showToast("User profile not found.");
+        return;
+    }
+
+    // Fill the Profile Page with this user's data
+    document.getElementById('profile-name-display').innerText = user.pseudonym;
+    document.getElementById('profile-pfp-display').src = user.pfp || `https://ui-avatars.com/api/?name=${user.pseudonym}`;
+    document.getElementById('profile-bio-display').innerText = user.bio || "This magician hasn't written a bio yet.";
+
+    // Filter books by this specific author
+    const authorBooks = allBooks.filter(b => b.authorId === userId && b.published && b.visibility === 'public');
+    
+    const grid = document.getElementById('author-books-grid');
+    if (grid) {
+        grid.innerHTML = authorBooks.map(b => renderBookCard(b)).join('') || 
+        `<p class="text-slate-400 text-xs uppercase font-black">No public manuscripts yet.</p>`;
+    }
+
+    showPage('user-profile-page'); // Switch to the profile view
+}
+
 // ─────────────────────────── UTILS ───────────────────────────
 function showToast(msg) {
     const t = document.getElementById('toast');
@@ -908,6 +935,32 @@ function renderBookCard(book) {
         ${count>0?`<div class="flex items-center gap-1 px-1 mt-0.5"><span class="star-filled text-[10px]">★</span><span class="text-[8px] font-black text-slate-400">${avg.toFixed(1)}</span></div>`:''}
         <span class="px-1 mt-0.5 inline-block status-badge status-${book.status||'ongoing'} text-[7px]">${book.status||'ongoing'}</span>
     </div>`;
+
+    // Change this line:
+// <p class="dbms-card-body">${authorName}</p>
+
+// To this:
+<p class="dbms-card-body cursor-pointer hover:text-amber-500 transition" 
+   onclick="event.stopPropagation(); viewUserProfile('${b.authorId}')">
+   ${authorName}
+</p>
+}
+
+function renderCommunityPage() {
+    const container = document.getElementById('magicians-list');
+    if (!container) return;
+
+    // Turn the allUsers object into an array and map it to HTML
+    container.innerHTML = Object.values(allUsers).map(u => `
+        <div class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-slate-100 hover:shadow-lg transition cursor-pointer" 
+             onclick="viewUserProfile('${u.uid}')">
+            <img src="${u.pfp || 'images/default-pfp.png'}" class="w-12 h-12 rounded-full object-cover">
+            <div>
+                <h4 class="font-bold text-slate-900">${u.pseudonym}</h4>
+                <p class="text-[10px] text-amber-500 uppercase font-black tracking-widest">${u.role || 'Magician'}</p>
+            </div>
+        </div>
+    `).join('');
 }
 
 function getBookTotalLikes(book) { return book.chapters.reduce((s,ch) => s+(ch.likes||[]).length, 0); }
@@ -1453,6 +1506,19 @@ function updateUI() {
     }
     showPage('home');
 }
+
+// At the top of app.js
+let allUsers = JSON.parse(localStorage.getItem('jiro_users')) || {
+    'admin@jiro.com': {
+        uid: 'admin123',
+        pseudonym: 'Jirohanna',
+        pfp: 'images/logo.png',
+        role: 'Developer',
+        gender: 'witch',
+        bio: 'The creator of Jiro.'
+    },
+    // Add more "seed" users here so the archive isn't empty for new people
+};
 
 window.onload = function() {
     if (localStorage.getItem('jiro_dark')==='1') { document.body.classList.add('dark-mode'); document.getElementById('dark-toggle-btn').classList.add('on'); }
