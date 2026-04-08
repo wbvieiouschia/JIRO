@@ -1,19 +1,19 @@
 // ─────────────────────────── GENRE DATA ───────────────────────────
 const GENRE_INFO = {
-    'Boys Love Collection':          { emoji:'💙', short:'BL', desc:'Stories that focus on romantic relationships between male characters. Often explores emotional growth, identity, and the journey of love between men.' },
-    'Woman Love Woman Collection':   { emoji:'💜', short:'WLW', desc:'Stories centered on romantic relationships between female characters. Can range from sweet and wholesome to deep and dramatic.' },
-    'Circle Romance':                { emoji:'🔁', short:'', desc:'A relationship setup where multiple people are romantically connected in a loop (e.g., A likes B, B likes C, C likes A). Usually full of tension and misunderstandings.' },
-    'Corruption':                    { emoji:'🖤', short:'', desc:'Focuses on a character becoming morally darker or influenced negatively, often due to love, power, or manipulation. Can involve psychological or emotional themes.' },
-    'Dystopian Fantasy':             { emoji:'🌑', short:'', desc:'Set in a broken or controlled world combined with fantasy elements (magic, powers, etc.). Often explores survival, rebellion, or injustice.' },
-    'Enemies to Lovers':             { emoji:'⚔️❤️', short:'', desc:'Two characters start off hating each other but gradually develop romantic feelings. Popular for tension, banter, and slow-burn romance.' },
-    'Falling In Love Again':         { emoji:'💞', short:'', desc:'Characters who once loved each other reconnect and fall in love again, often after separation, conflict, or time apart.' },
-    'Fan Fiction':                   { emoji:'✍️', short:'', desc:'Stories written using existing characters, worlds, or universes from movies, books, or games — with new plots or creative twists.' },
-    'Forbidden Love':                { emoji:'🚫❤️', short:'', desc:'Romance between characters who aren\'t supposed to be together due to rules, society, family, or circumstances.' },
-    'Lovers to Friends':             { emoji:'💔➡️🤝', short:'', desc:'A couple who were once in a romantic relationship transition into friendship instead. Complex, emotional, and bittersweet.' },
-    'Second Chance':                 { emoji:'🔄', short:'', desc:'Characters get another opportunity at love or life, usually after mistakes, breakups, or missed chances.' },
-    'Small Town Romance':            { emoji:'🌻', short:'', desc:'Set in a small, close-knit community featuring cozy vibes, familiar faces, and slower-paced relationships.' },
-    'University Series':             { emoji:'🎓', short:'', desc:'Stories set in college/university life, focusing on academics, friendships, independence, and romance.' },
-    'Unrequited Love':               { emoji:'💔', short:'', desc:'One character is in love with someone who doesn\'t feel the same way. Often emotional and bittersweet.' },
+    'Boys Love Collection':          { desc:'Stories that focus on romantic relationships between male characters. Often explores emotional growth, identity, and the journey of love between men.' },
+    'Girls Love Collection':         { desc:'Stories centered on romantic relationships between female characters. Can range from sweet and wholesome to deep and dramatic.' },
+    'Circle Romance':                { desc:'A relationship setup where multiple people are romantically connected in a loop (e.g., A likes B, B likes C, C likes A). Usually full of tension and misunderstandings.' },
+    'Corruption':                    { desc:'Focuses on a character becoming morally darker or influenced negatively, often due to love, power, or manipulation. Can involve psychological or emotional themes.' },
+    'Dystopian Fantasy':             { desc:'Set in a broken or controlled world combined with fantasy elements (magic, powers, etc.). Often explores survival, rebellion, or injustice.' },
+    'Enemies to Lovers':             { desc:'Two characters start off hating each other but gradually develop romantic feelings. Popular for tension, banter, and slow-burn romance.' },
+    'Falling In Love Again':         { desc:'Characters who once loved each other reconnect and fall in love again, often after separation, conflict, or time apart.' },
+    'Fan Fiction':                   { desc:'Stories written using existing characters, worlds, or universes from movies, books, or games — with new plots or creative twists.' },
+    'Forbidden Love':                { desc:'Romance between characters who aren\'t supposed to be together due to rules, society, family, or circumstances.' },
+    'Lovers to Friends':             { desc:'A couple who were once in a romantic relationship transition into friendship instead. Complex, emotional, and bittersweet.' },
+    'Second Chance':                 { desc:'Characters get another opportunity at love or life, usually after mistakes, breakups, or missed chances.' },
+    'Small Town Romance':            { desc:'Set in a small, close-knit community featuring cozy vibes, familiar faces, and slower-paced relationships.' },
+    'University Series':             { desc:'Stories set in college/university life, focusing on academics, friendships, independence, and romance.' },
+    'Unrequited Love':               { desc:'One character is in love with someone who doesn\'t feel the same way. Often emotional and bittersweet.' },
 };
 
 // ─────────────────────────── STATE ───────────────────────────
@@ -921,17 +921,28 @@ function handleGenreSelect(genre) {
 }
 
 function renderGenrePage(genre) {
-    const info = GENRE_INFO[genre] || { emoji:'📖', desc:'', short:'' };
+    // We removed the emoji and short properties here
+    const info = GENRE_INFO[genre] || { desc: '' };
     const banner = document.getElementById('genre-banner');
+    
     if (banner) {
         banner.innerHTML = `
-        <span class="genre-banner-emoji">${info.emoji}</span>
-        <h1 class="genre-banner-title">${genre}${info.short?' ('+info.short+')':''}</h1>
-        <p class="genre-banner-desc">${info.desc}</p>`;
+        <h1 class="genre-banner-title">${genre}</h1>
+        <p class="genre-banner-desc">${info.desc || ''}</p>`;
     }
-    const books = allBooks.filter(b => b.genre === genre && b.published && b.visibility !== 'private' && !(b.explicit && !(currentUser && currentUser.isAdult)));
+    
+    const books = allBooks.filter(b => 
+        b.genre === genre && 
+        b.published && 
+        b.visibility !== 'private' && 
+        !(b.explicit && !(currentUser && currentUser.isAdult))
+    );
+    
     const grid = document.getElementById('genre-books-grid');
-    if (grid) grid.innerHTML = books.map(b => renderBookCard(b)).join('') || `<p class="col-span-full py-16 text-center text-slate-300 font-bold uppercase text-xs">No manuscripts in this genre yet.</p>`;
+    if (grid) {
+        grid.innerHTML = books.map(b => renderBookCard(b)).join('') || 
+        `<p class="col-span-full py-16 text-center text-slate-300 font-bold uppercase text-xs">No manuscripts in this genre yet.</p>`;
+    }
 }
 
 // ─────────────────────────── FEATURED MAGICIANS ───────────────────────────
